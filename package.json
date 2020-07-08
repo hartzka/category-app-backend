@@ -36,7 +36,9 @@
     "mongoose": "^5.8.9",
     "mongoose-unique-validator": "^2.0.3",
     "multer": "^1.4.2",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "aws-sdk": "2.x",
+    "ejs": "2.x"
   },
   "jest": {
     "testEnvironment": "node"
