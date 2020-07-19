@@ -2,6 +2,7 @@ const express = require('express');
 const Image = require('../models/image');
 const imageRouter = express.Router();
 const multer = require('multer');
+const s3 = require('./s3')
 
 imageRouter.get('/', async (request, response) => {
     const images = await Image.find({}).populate('blogs', {
@@ -15,15 +16,15 @@ const storage = multer.diskStorage({
         cb(null, './uploads/')
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + file.originalname);
+        cb(null, Date.now() + file.originalname)
     }
 });
 
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-        cb(null, true);
+        cb(null, true)
     } else {
-        cb(null, false);
+        cb(null, false)
     }
 }
 
@@ -41,10 +42,12 @@ imageRouter.route("/uploadmulter")
         console.log(req.body)
         const image = new Image({
             imageName: req.body.imageName,
-            imageData: req.file.path,
+            imageData: `https://${process.env.S3_BUCKET_NAME}.s3.eu-north-1.amazonaws.com/${req.file.path}`,
             multerImage: req.body.multerImage
         });
+        console.log(image)
         const newImage = await image.save()
+        s3.uploadFile(req.file.path)
         res.json(newImage)
     } catch (exception) {
         next(exception)
