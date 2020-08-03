@@ -5,8 +5,8 @@ const multer = require('multer');
 const s3 = require('./s3')
 
 imageRouter.get('/', async (request, response) => {
-    const images = await Image.find({}).populate('blogs', {
-      title: 1, author: 1, url: 1, likes: 1
+    const images = await Image.find({}).populate('categ', {
+      mainCateg: 1, subCateg: 1, description: 1, stars: 1, name: 1
     })  
     response.json(images.map(u => u.toJSON()))
 })
@@ -39,13 +39,11 @@ const upload = multer({
 imageRouter.route("/uploadmulter")
     .post(upload.single('imageData'), async (req, res, next) => {
         try {
-        console.log(req.body)
         const image = new Image({
             imageName: req.body.imageName,
             imageData: `https://${process.env.S3_BUCKET_NAME}.s3.eu-north-1.amazonaws.com/${req.file.path}`,
             multerImage: req.body.multerImage
         });
-        console.log(image)
         const newImage = await image.save()
         s3.uploadFile(req.file.path)
         res.json(newImage)

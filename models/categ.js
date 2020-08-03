@@ -1,16 +1,18 @@
 const mongoose = require('mongoose')
 
-const blogSchema = mongoose.Schema({
-  title: {
+const categSchema = mongoose.Schema({
+  mainCateg: {
     type: String,
     required: true
   },
-  author: String,
-  url: {
-    type: String,
-    required: true
+  isMainCateg: {
+    type: Boolean,
+    required: true,
   },
-  likes: Number,
+  subCateg: String,
+  name: String,
+  description: String,
+  stars: Number,
   image: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Image'
@@ -21,7 +23,7 @@ const blogSchema = mongoose.Schema({
   },
 })
 
-blogSchema.set('toJSON', {
+categSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -29,5 +31,6 @@ blogSchema.set('toJSON', {
   }
 })
 
-const Blog = mongoose.model('Blog', blogSchema)
-module.exports = Blog
+const Categ = mongoose.model('Categ', categSchema)
+module.exports = Categ
+

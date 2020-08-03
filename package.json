@@ -7,6 +7,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "build:ui": "rm -rf build && cd ../frontend/ && npm run build --prod && cp -r build ../backend/",
+    "build:ui:start": "rm -rf build && cd ../frontend/ && npm run build --prod && cp -r build ../backend/ && npm run start",
     "build:ui2": "rm -rf build && cd ../frontend/ && npm run build --prod && cp -r build ../backend/ && kill $(lsof -t -i:3001)",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m heroku && git push && npm run deploy",

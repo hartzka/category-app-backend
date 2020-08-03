@@ -14,9 +14,9 @@ const ImageSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    blog: {
+    categ: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Blog'
+        ref: 'Categ'
     }}, {
     timestamps: true
 });

@@ -1,52 +1,51 @@
 const _ = require('lodash')
 const User = require('../models/user')
 
-const dummy = (blogs) => {
-  return 1
-}
-
-const totalLikes = (blogs) => {
-  let total = blogs.reduce(function(sum, blog) {
-      return sum+blog.likes
+const totalStars = (categs) => {
+  let total = categs.reduce(function(sum, categ) {
+      return sum+categ.stars
   }, 0)
   return total
 }
 
-const favoriteBlog = (blogs) => {
-  if (blogs.length===0) {
+const favoriteCateg = (categs) => {
+  if (categs.length===0) {
       return {}
   }
 
-  maxLikes = blogs.reduce(function (blog, m) {
-    return ( blog.likes > m.likes ? blog : m );
+  maxStars = categs.reduce(function (categ, m) {
+    return ( categ.stars > m.stars ? categ : m );
   });
 
   return {
-      title: maxLikes.title,
-      author: maxLikes.author,
-      likes: maxLikes.likes,
+      mainCateg: maxStars.mainCateg,
+      subCateg: maxStars.subCateg,
+      name: maxStars.name,
+      description: maxStars.description,
+      isMainCateg: maxStars.isMainCateg,
+      stars: maxStars.stars
     }
 }
 
-const mostBlogs = (blogs) => {
-    return _(blogs)
-    .groupBy('author')
-    .map((b, author) => ({ author, blogs: b.length }))
-    .maxBy('blogs')
+const mostCategs = (categs) => {
+    return _(categs)
+    .groupBy('mainCateg')
+    .map((c, mainCateg) => ({ mainCateg, categs: c.length }))
+    .maxBy('categs')
 }
 
-const mostLikes = (blogs) => {
-    return _(blogs)
-    .groupBy('author')
-    .map((blogs, author) => {
-        const likes = blogs.reduce(function(sum, blog) {
-            return sum+blog.likes
+const mostStars = (categs) => {
+    return _(categs)
+    .groupBy('mainCateg')
+    .map((categs, mainCateg) => {
+        const stars = categs.reduce(function(sum, categ) {
+            return sum+categ.stars
         }, 0)
-        return ({ author, likes })
+        return ({ mainCateg: mainCateg, stars: stars })
     })
-    .maxBy('likes')
+    .maxBy('stars')
 }
 
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
+  totalStars: totalStars, favoriteCateg: favoriteCateg, mostCategs: mostCategs, mostStars
 }
